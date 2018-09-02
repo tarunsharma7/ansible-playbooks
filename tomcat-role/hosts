@@ -1,0 +1,8 @@
+[webserver]
+10.142.0.3
+
+[db]
+10.142.0.2
+
+[tomcat-servers:children]
+webserver
