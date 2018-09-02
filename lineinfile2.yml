@@ -1,0 +1,10 @@
+---
+- hosts: db
+  tasks:
+    - name: to comment line and add new
+      lineinfile:
+         path: /etc/httpd/conf/httpd.conf
+         regexp: '^Listen '
+         insertafter: '^#Listen '
+         line: 'Listen 80'
+

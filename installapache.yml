@@ -1,0 +1,17 @@
+---
+- hosts: webserver
+  tasks:
+   - name: install httpd package
+     yum:
+       name: httpd
+       state: latest
+   - name: copy index file
+     copy:
+       src: /etc/ansible/index.html 
+       dest: /var/www/html
+       owner: root
+       group: root
+   - name: starting service
+     service:
+       name: httpd
+       state: started

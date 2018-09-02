@@ -1,0 +1,26 @@
+---
+- hosts: webserver
+  tasks:
+    - name: copy files from src to dest
+      copy:
+        src: /etc/ansible/playbook/jdk-8u181-linux-x64.tar.gz
+        dest: /opt
+#        remote_src: yes
+
+    - name: Unarchive a file that is already on the remote machine
+      unarchive:
+        src: /opt/jdk-8u181-linux-x64.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: Defining JAVA_HOME
+      lineinfile:
+        dest: /etc/profile
+        state: present
+        line: '{{ item }}'
+      with_items:
+        - 'export JAVA_HOME=/opt/jdk1.8.0_181'
+        - 'export PATH=$JAVA_HOME/bin:$PATH'
+
+    - name: sourcing profile
+      shell: source /etc/profile

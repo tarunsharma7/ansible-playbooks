@@ -1,0 +1,9 @@
+---
+- hosts: webserver
+  tasks:
+    - name: adding removing line using blockinfilr
+      blockinfile:
+         path: /etc/ssh/sshd_config
+         block: |
+           Match User ansible-agent
+           PasswordAuthentication no

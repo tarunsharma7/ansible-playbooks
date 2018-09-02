@@ -1,0 +1,7 @@
+---
+- hosts: webserver
+  tasks:
+   - name: archive file and folde
+     archive:
+        path: /var/www/html/index.html
+        dest: /var/www/html/test.zip
