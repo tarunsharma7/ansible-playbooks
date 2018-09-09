@@ -1,0 +1,11 @@
+---
+user: tomcat
+group: tomcat
+download_url: http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz
+download_path: /opt/apache-tomcat-7.0.61.tar.gz
+tomcat_home: /opt/apache-tomcat-7.0.61
+tomcat_config: /opt/apache-tomcat-7.0.61/conf
+http_port: 8080
+https_port: 8443
+admin_username: admin
+admin_password: adminsecret
