@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: shekhar
+  tasks:
+    - name: taking backup
+      command: touch /tmp/test
+      become: yes
+      become_method: sudo
