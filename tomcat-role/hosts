@@ -6,3 +6,9 @@
 
 [tomcat-servers:children]
 webserver
+
+[webserver]
+54.81.46.9 http_port=8080 https_port=8443
+
+[dbserver]
+3.88.55.188 http_port=8080 https_port=8443
