@@ -1,0 +1,74 @@
+---
+ - hosts: node2
+   tasks:
+     - name: taking backup before patching
+       shell: |
+          df -h
+          ifconfig
+          route -n
+          ntpstat
+          cat /etc/resolv.conf
+          cat /etc/fstab
+          uname -r
+       register: prepatch
+       ignore_errors: True
+     - copy:
+         content="{{prepatch.stdout}}" dest=/tmp/prepatch.txt
+
+     - name: Checking if appliaction is down
+       shell: if ps -elf |egrep 'java|httpd' |grep -v grep >/dev/null; then echo 'applicaion is running'; else echo 'applications is not running';fi
+       ignore_errors: true
+       register: application_status
+     - name: Define Variable
+       set_fact:
+           exists: "{{ application_status.stdout }}"
+
+     - name: decision to patch the server
+       fail: msg="{{inventory_hostname}} have running application. Kindly notfiy application team to stop the application first and then start patching."
+       when: exists == 'applicaion is running'
+       register: need_Patching
+
+     - name: check for all update and start patching
+       yum:
+         name: '*'
+         state: latest
+       when: exists == 'applications is not running'
+       register: yum_update
+     - debug:
+         msg: update "{{ yum_update }}"
+
+     - name: check karnal veriosn and reboot the server
+       shell: KERNEL_NEW=$(rpm -q --last kernel |head -1 | awk '{print $1}' | sed 's/kernel-//'); KERNEL_NOW=$(uname -r); if [[ $KERNEL_NEW != $KERNEL_NOW ]]; then echo "reboot_needed"; else echo "reboot_not_needed"; fi
+       ignore_errors: true
+       register: reboot_required
+     - name: Defaine var
+       set_fact:
+           reboot: "{{ reboot_required.stdout }}"
+     - debug:
+           msg: output "{{ reboot }}"
+
+
+
+     - name: reboot server
+       command: shutdown -r +1 "Rebooting System After Patching"
+       async: 0
+       poll: 0
+       when: reboot == "reboot_needed"
+       register: reboot_done
+       ignore_errors: true
+
+
+     - name: waitfor server to come up
+       pause:
+         minutes: 3
+
+     - name: Wait for the server to come back
+       wait_for:
+       host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+       delay: 30
+       state: started
+       port: 22
+       become: false
+       when: reboot_done|changed
+       delegate_to: localhost
+
