@@ -1,0 +1,17 @@
+---
+- hosts: all
+  tasks:
+    - name: taking backup before patching
+      shell: |
+          df -h
+          ifconfig
+          route -n
+          ntpstat
+          cat /etc/resolv.conf
+          cat /etc/fstab
+          uname -r
+      register: prepatch
+    - debug:
+        msg: update "{{ prepatch }}"
+    - copy:
+         content="{{prepatch.stdout}}" dest=/tmp/prepatch.txt
