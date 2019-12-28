@@ -1,5 +1,4 @@
----
-- hosts: webserver
+- hosts: all
   tasks:
     - name:  install multiple packages using withiteam
       yum: name={{item}} state=installed

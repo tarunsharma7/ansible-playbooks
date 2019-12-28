@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+    - name: copy files from src to dest
+      copy:
+       src: /etc/ansible/playbook/jdk-8u211-linux-x64.tar.gz
+       dest: /opt/jdk-8u211-linux-x64.tar.gz
+       owner: root
+       group: root
+       mode: '0644'
+

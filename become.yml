@@ -1,8 +1,8 @@
 ---
-- hosts: all
-  remote_user: shekhar
+- hosts: master
+  remote_user: ansadmin
   tasks:
     - name: taking backup
-      command: touch /tmp/test
+      command: touch /abc 
       become: yes
       become_method: sudo

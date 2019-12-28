@@ -1,0 +1,74 @@
+---
+- hosts: master
+  tasks:
+
+    - name: Download MVN
+      get_url: url=https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz dest=/opt/
+
+    - name: Extract archive
+      command: chdir=/usr/share /bin/tar xvf /opt/apache-maven-3.6.3-bin.tar.gz -C /opt/
+
+    - name: Defining MVN_HOME
+      lineinfile:
+        dest: /etc/profile
+        state: present
+        line: '{{ item }}'
+      with_items:
+        - 'export MVN_HOME=apache-maven-3.6.3'
+        - 'export PATH=$MVN_HOME/bin:$PATH'
+
+
+
+    - name: copy files from src to dest
+      copy:
+        src: /etc/ansible/playbook/jdk-8u211-linux-x64.tar.gz
+        dest: /opt
+
+    - name: Unarchive a file that is already on the remote machine
+      unarchive:
+        src: /opt/jdk-8u211-linux-x64.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: Defining JAVA_HOME
+      lineinfile:                                             
+        dest: /etc/profile
+        state: present
+        line: '{{ item }}'
+      with_items:
+        - 'export JAVA_HOME=/opt/jdk1.8.0_211'                
+        - 'export PATH=$JAVA_HOME/bin:$PATH'
+
+    - name: update sourece
+      shell: source /etc/profile
+    
+      #    - name: create softlink for MVN
+      #      shell: ln -s /opt/apache-maven-3.6.3/bin/mvn /bin/mvn
+
+
+      #    - name:  install multiple packages using withiteam
+      #      yum: name={{item}} state=installed
+      #      with_items:                                                
+      #        - git
+
+    - name: clone code
+      shell: cd /tmp ;git clone https://github.com/shekharshamra/jenkin.git ;cd /tmp/jenkin/ ;mvn clean install
+
+
+    - name: Download apache tomcat
+      get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz dest=/opt/
+
+    - name: Extract archive
+      command: chdir=/usr/share /bin/tar xvf /opt/apache-tomcat-8.5.50.tar.gz -C /opt/
+
+      #    - name: enable tomcat startup
+      #      systemd:
+      # name: tomcat
+      # enabled: yes
+      # state: restarted
+      # become: true
+
+
+    - name: deploy code
+      shell: cd /tmp/jenkin/in28minutes-web-servlet-jsp/target ;cp in28minutes.war /opt/apache-tomcat-8.5.50/webapps/
+

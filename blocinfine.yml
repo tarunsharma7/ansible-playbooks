@@ -1,9 +1,9 @@
 ---
-- hosts: webserver
+- hosts: all
   tasks:
     - name: insert/update "Match User" configuration block in /etc/ssh/sshd_config
       blockinfile:
         path: /etc/profile
-    block: |
-      Match export
-      export JAVA_HOME=/opt/java
+        block: |
+          Match export
+          export JAVA_HOME=/opt/abhi nahi

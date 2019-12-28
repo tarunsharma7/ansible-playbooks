@@ -1,0 +1,28 @@
+Systemd unit file for tomcat
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=forking
+SuccessExitStatus=143
+
+Environment=JAVA_HOME=/opt/jdk1.8.0_211
+Environment=CATALINA_PID=/opt/apache-tomcat-8.5.50/temp/tomcat.pid
+Environment=CATALINA_HOME=/opt/apache-tomcat-8.5.50
+Environment=CATALINA_BASE=/opt/apache-tomcat-8.5.50
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+
+
+ExecStart=/opt/apache-tomcat-8.5.50/bin/startup.sh
+ExecStop=/bin/kill -15 $MAINPID
+
+User=tomcat
+Group=tomcat
+UMask=0007
+
+
+[Install]
+WantedBy=multi-user.target
