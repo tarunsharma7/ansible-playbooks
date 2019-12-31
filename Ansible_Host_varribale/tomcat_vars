@@ -1,0 +1,13 @@
+---
+user: tomcat
+group: tomcat
+download_url: http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz
+download_path: /opt/apache-tomcat-8.5.50.tar.gz
+tomcat_home: /opt/apache-tomcat-8.5.50
+tomcat_config: /opt/apache-tomcat-8.5.50/conf
+admin_username: admin
+admin_password: adminsecret
+pkgs:
+  - vim
+  - firewalld
+
