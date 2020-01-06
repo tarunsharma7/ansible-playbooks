@@ -1,0 +1,13 @@
+---
+admin_username: admin
+admin_password: adminsecret
+pkgs:
+  - vim
+  - httpd
+  - firewalld
+httpd_config: /etc/httpd/conf.d/
+http_firewall_open_services: ["http", "https"]
+site1_config: /var/www/html/webserver1/index.html
+site2_config: /var/www/html/webserver2/index.html
+
+

@@ -1,0 +1,3 @@
+---
+- name: restart
+  service: name=httpd state=started enabled=yes
