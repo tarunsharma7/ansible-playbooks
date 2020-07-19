@@ -1,0 +1,43 @@
+---
+- hosts: master
+  tasks:
+   - name: install httpd package
+     yum:
+       name: httpd
+       state: latest
+
+   - name: create directory
+     shell: echo "172.31.1.0 webserver1.example.com" >> /etc/hosts ;echo "172.31.1.0 webserver2.example.com" >> /etc/hosts ;mkdir /var/www/html/webserver1 ;mkdir /var/www/html/webserver2 ;echo "webserver1" >> /var/www/html/webserver1/index.html ;echo "webserver2" >> /var/www/html/webserver2/index.html ;mkdir /var/log/httpd/webserver1 ;mkdir /var/log/httpd/webserver2 
+
+   - name: Copy conf file
+     copy:
+       src: /etc/ansible/playbook/webserver1.conf 
+       dest: /etc/httpd/conf.d/webserver1.conf
+
+
+   - name: Copy conf file
+     copy:
+       src: /etc/ansible/playbook/webserver2.conf
+       dest: /etc/httpd/conf.d/webserver2.conf
+
+   - name: Start and enable firewalld
+     service:
+       name: firewalld
+       state: started
+       enabled: yes
+     when: ansible_service_mgr == "systemd"
+
+   - name: Open tomcat port on the firewall
+     firewalld:
+       port: 80/tcp
+       permanent: true
+       state: enabled
+       immediate: yes
+     when: ansible_service_mgr == "systemd"
+  
+
+
+   - name: starting service
+     service:
+       name: httpd
+       state: started

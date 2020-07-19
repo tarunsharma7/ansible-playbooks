@@ -1,5 +1,5 @@
 ---
-- hosts: db
+- hosts: all
   tasks:
     - name: to comment line and add new
       lineinfile:
@@ -7,4 +7,5 @@
          regexp: '^Listen '
          insertafter: '^#Listen '
          line: 'Listen 80'
+
 

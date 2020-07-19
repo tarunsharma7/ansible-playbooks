@@ -1,5 +1,5 @@
 ---
- - hosts: node2
+ - hosts: master
    tasks:
      - name: taking backup before patching
        shell: |
@@ -64,11 +64,10 @@
 
      - name: Wait for the server to come back
        wait_for:
-       host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
-       delay: 30
-       state: started
-       port: 22
-       become: false
-       when: reboot_done|changed
-       delegate_to: localhost
-
+        host: "{{ ansible_ssh_host | default(inventory_hostname) }}"
+        delay: 30
+        state: started
+        port: 22
+        become: false
+        when: reboot_done|changed
+        delegate_to: localhost

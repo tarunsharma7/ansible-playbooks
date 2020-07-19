@@ -1,5 +1,5 @@
 ---
-- hosts: webserver
+- hosts: master
   tasks:
    - name: install httpd package
      yum:

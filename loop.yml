@@ -1,15 +1,15 @@
 ---
-- hosts: webserver
+- hosts: master
 
   tasks:
   - apt: name={{item}} state=latest
     with_items:
-     - ntp
+     - httpd
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - yum: name={{item}} state=latest
     with_items:
-     - ntp
+     - httpd
     when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-  - service: name=ntpd state=started enabled=yes
+  - service: name=httpd state=started enabled=yes

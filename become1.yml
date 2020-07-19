@@ -1,0 +1,10 @@
+---
+- hosts: master
+  become: yes
+  #  remote_user: ansadmin
+  tasks:
+     - name: Ensure the httpd service is running
+       service:
+        name: httpd
+        state: started
+        #     become: yes

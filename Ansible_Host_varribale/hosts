@@ -1,0 +1,11 @@
+[client]
+#172.31.0.131
+ip-172-31-0-131.ec2.internal
+
+[master]
+172.31.1.0 http_port=8088 https_port=8449
+#Directly given variable to this host entry 
+
+[tomcat_vars:children]
+client
+master

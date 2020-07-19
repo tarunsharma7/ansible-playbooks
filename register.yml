@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: master
   tasks:
     - name: taking backup before patching
       shell: |
